@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hafta Hafta Gebelik Takibi</title>
+<style>
+  :root{
+    --butter: #F6E7A8;
+    --butter-soft: #FBF3D3;
+    --sage: #9CB38A;
+    --sage-deep: #7C9A6B;
+    --sage-pale: #E3ECDA;
+    --text-bold: #6E7F5C;
+    --text-bold-2: #B98A4A;
+    --card-bg: #FDF8E8;
+  }
+
+  *{box-sizing:border-box;}
+
+  body{
+    margin:0;
+    min-height:100vh;
+    font-family:'Quicksand','Segoe UI',sans-serif;
+    background:linear-gradient(160deg, var(--butter) 0%, var(--butter-soft) 28%, var(--sage-pale) 60%, var(--sage) 100%);
+    background-attachment:fixed;
+    color:var(--text-bold);
+    padding:0 0 4rem 0;
+  }
+
+  header{
+    text-align:center;
+    padding:3rem 1.5rem 2rem;
+  }
+
+  header h1{
+    font-size:2.2rem;
+    font-weight:800;
+    color:var(--text-bold);
+    margin:0 0 .4rem;
+    letter-spacing:.5px;
+  }
+
+  header p{
+    font-weight:700;
+    color:var(--text-bold-2);
+    font-size:1.05rem;
+    margin:0;
+  }
+
+  .selector-wrap{
+    max-width:520px;
+    margin:0 auto 2.5rem;
+    padding:0 1.5rem;
+    text-align:center;
+  }
+
+  .selector-wrap label{
+    display:block;
+    font-weight:800;
+    margin-bottom:.6rem;
+    font-size:1.1rem;
+    color:var(--text-bold);
+  }
+
+  select{
+    width:100%;
+    padding:.9rem 1.1rem;
+    border-radius:16px;
+    border:3px solid var(--sage-deep);
+    background:var(--card-bg);
+    font-size:1.1rem;
+    font-weight:800;
+    color:var(--text-bold);
+    appearance:none;
+    cursor:pointer;
+    text-align:center;
+  }
+
+  .week-slider{
+    display:flex;
+    align-items:center;
+    gap:.8rem;
+    max-width:520px;
+    margin:1rem auto 0;
+    padding:0 1.5rem;
+  }
+
+  input[type="range"]{
+    flex:1;
+    accent-color: var(--sage-deep);
+  }
+
+  .week-badge{
+    min-width:54px;
+    text-align:center;
+    background:var(--sage-deep);
+    color:var(--butter-soft);
+    font-weight:800;
+    border-radius:12px;
+    padding:.4rem .3rem;
+  }
+
+  main{
+    max-width:680px;
+    margin:0 auto;
+    padding:0 1.5rem;
+  }
+
+  .info-card{
+    background:var(--card-bg);
+    border:3px solid var(--sage-deep);
+    border-radius:28px;
+    padding:2rem 1.8rem;
+    box-shadow:0 10px 0 var(--sage-deep), 0 14px 24px rgba(124,154,107,.25);
+  }
+
+  .info-card .top-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:1rem;
+    margin-bottom:1.2rem;
+  }
+
+  .week-title{
+    font-size:1.6rem;
+    font-weight:800;
+    color:var(--text-bold);
+  }
+
+  .fruit-pill{
+    background:var(--butter);
+    color:var(--text-bold-2);
+    font-weight:800;
+    padding:.5rem 1rem;
+    border-radius:999px;
+    font-size:.95rem;
+  }
+
+  .stats-row{
+    display:flex;
+    gap:1rem;
+    margin-bottom:1.4rem;
+    flex-wrap:wrap;
+  }
+
+  .stat{
+    flex:1;
+    min-width:120px;
+    background:var(--sage-pale);
+    border-radius:18px;
+    padding:.8rem 1rem;
+    text-align:center;
+  }
+
+  .stat span{
+    display:block;
+  }
+
+  .stat .stat-label{
+    font-weight:800;
+    font-size:.8rem;
+    color:var(--text-bold-2);
+    margin-bottom:.2rem;
+  }
+
+  .stat .stat-value{
+    font-weight:800;
+    font-size:1.2rem;
+    color:var(--text-bold);
+  }
+
+  .week-desc{
+    font-weight:700;
+    line-height:1.7;
+    font-size:1.02rem;
+    color:var(--text-bold);
+  }
+
+  .trimester-tag{
+    display:inline-block;
+    margin-top:1.4rem;
+    background:var(--sage-deep);
+    color:var(--butter-soft);
+    font-weight:800;
+    font-size:.85rem;
+    padding:.4rem 1rem;
+    border-radius:999px;
+  }
+
+  footer{
+    margin-top:4rem;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:.6rem;
+  }
+
+  footer p{
+    font-weight:800;
+    color:var(--text-bold-2);
+    font-size:.95rem;
+  }
+
+  .baby-wrap{
+    position:relative;
+    width:140px;
+    height:140px;
+    cursor:pointer;
+  }
+
+  .baby-svg{
+    width:140px;
+    height:140px;
+    transform-origin:50% 90%;
+  }
+
+  .baby-arm{
+    transform-origin:62px 70px;
+    animation:wave 1.8s ease-in-out infinite;
+  }
+
+  @keyframes wave{
+    0%,100%{ transform:rotate(0deg); }
+    25%{ transform:rotate(-28deg); }
+    50%{ transform:rotate(0deg); }
+    75%{ transform:rotate(-18deg); }
+  }
+
+  .glitter{
+    position:absolute;
+    top:0; left:0;
+    width:10px; height:10px;
+    border-radius:50%;
+    pointer-events:none;
+    animation:pop .9s ease-out forwards;
+  }
+
+  @keyframes pop{
+    0%{ opacity:1; transform:translate(0,0) scale(1); }
+    100%{ opacity:0; transform:translate(var(--dx), var(--dy)) scale(.3); }
+  }
+
+  @media (max-width:480px){
+    header h1{font-size:1.7rem;}
+    .info-card{padding:1.5rem 1.1rem;}
+    .stats-row{flex-direction:column;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Hafta Hafta Gebelik Rehberi</h1>
+  <p>Hangi haftadasınız? Aşağıdan seçin, bebeğinizin o haftaki gelişimini görün.</p>
+</header>
+
+<div class="selector-wrap">
+  <label for="week-select">Gebelik haftanızı seçin</label>
+  <select id="week-select"></select>
+  <div class="week-slider">
+    <span style="font-weight:800;">1</span>
+    <input type="range" id="week-range" min="1" max="40" value="1" step="1">
+    <span style="font-weight:800;">40</span>
+    <div class="week-badge" id="range-badge">1</div>
+  </div>
+</div>
+
+<main>
+  <div class="info-card" id="info-card"></div>
+</main>
+
+<footer>
+  <p>Bebeğiniz size el sallıyor</p>
+  <div class="baby-wrap" id="baby-wrap">
+    <svg class="baby-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="60" cy="78" rx="34" ry="30" fill="#F6E7A8"/>
+      <circle cx="60" cy="42" r="26" fill="#FCE9C9"/>
+      <path d="M36 36 Q60 14 84 36 Q84 18 60 14 Q36 18 36 36 Z" fill="#9CB38A"/>
+      <circle cx="50" cy="44" r="3.4" fill="#6E7F5C"/>
+      <circle cx="70" cy="44" r="3.4" fill="#6E7F5C"/>
+      <path d="M52 54 Q60 60 68 54" stroke="#B98A4A" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+      <circle cx="42" cy="50" r="4" fill="#F4B7A6" opacity="0.6"/>
+      <circle cx="78" cy="50" r="4" fill="#F4B7A6" opacity="0.6"/>
+      <g class="baby-arm">
+        <ellipse cx="86" cy="72" rx="9" ry="16" fill="#FCE9C9"/>
+      </g>
+      <ellipse cx="40" cy="80" rx="9" ry="15" fill="#FCE9C9"/>
+    </svg>
+  </div>
+</footer>
+
+<script>
+const weeksData = [
+{w:1, fruit:"Henüz çok küçük", length:"-", weight:"-", tri:1,
+ desc:"Bu hafta tıbbi hesaplamaya göre gebelik haftası sayımı başlar, ama gerçek anlamda döllenme henüz gerçekleşmemiştir. Doktorlar gebelik yaşını son adetin ilk gününden itibaren sayar, bu yüzden bu hafta aslında hazırlık haftasıdır."},
+{w:2, fruit:"Yumurtlama dönemi", length:"-", weight:"-", tri:1,
+ desc:"Yumurtlama bu haftada gerçekleşir. Bu günlerde olacak bir ilişki, gebeliğin gerçek başlangıcı olacaktır."},
+{w:3, fruit:"Bir hashaş tanesi büyüklüğünde", length:"-", weight:"-", tri:1,
+ desc:"Döllenme gerçekleşti ve embriyo rahime tutunmaya çalışıyor. İdrar testi henüz negatif çıkar, ama ilişkiden bir hafta sonra kanda bakılan BHCG testi gebeliği gösterebilir."},
+{w:4, fruit:"Hashaş tohumu kadar", length:"-", weight:"-", tri:1,
+ desc:"Adet gecikmesiyle gebelik fark edilir, hem idrar hem kan testi artık pozitif çıkar. Embriyo ikiye ayrılır; bir kısmı plasentaya, diğer kısmı bebeğe dönüşür. Ultrasonda henüz sadece küçük bir gebelik kesesi görülebilir."},
+{w:5, fruit:"Susam tanesi kadar", length:"-", weight:"-", tri:1,
+ desc:"Embriyo çok küçük olduğu için ultrasonda görünmez, sadece gebelik kesesi ve içindeki yolk sak izlenebilir. Embriyonun üç katmanı oluşur; bunlardan sinir sistemi, kalp, böbrek ve iç organlar gelişmeye başlar."},
+{w:6, fruit:"Mercimek tanesi kadar", length:"-", weight:"-", tri:1,
+ desc:"Bebek artık ultrasonda görülebilir ve çoğu zaman kalp atışı duyulur (dakikada 120-160 civarı). Eğer duyulmazsa endişelenmeden bir hafta sonra tekrar kontrol edilmesi önerilir. Beyin yarım küreleri gelişmeye başlar."},
+{w:7, fruit:"Yaban mersini büyüklüğünde", length:"-", weight:"-", tri:1,
+ desc:"Kollar güdük şekilde belirir, yüzde göz, kulak ve ağız bölgeleri şekillenmeye başlar. Beyin hücreleri inanılmaz bir hızla çoğalır. Hareketler başlasa da anne henüz bunları hissetmez."},
+{w:8, fruit:"Meksika fasulyesi kadar", length:"-", weight:"-", tri:1,
+ desc:"Eller ve kollar büyür, parmaklar arasında henüz perde vardır, ileride bu perdeler kaybolacaktır. Yüz hatları, burun ve gözler belirginleşmeye başlar."},
+{w:9, fruit:"Üzüm tanesi kadar", length:"-", weight:"-", tri:1,
+ desc:"Bu haftadan sonra bebeğe artık fetüs denir. Cinsiyet farklılaşması başlar ama ultrasonla görülmesi mümkün değildir. Pankreas ve safra kesesi oluşmaya başlar, parmak izi şekillenir."},
+{w:10, fruit:"Kumkuat meyvesi kadar", length:"3-4 cm", weight:"~5 g", tri:1,
+ desc:"Parmak araları açılmaya, kemik dokusu sertleşmeye başlar. Bebek idrar yapmaya başlar. Ultrasonda artık baş, kollar, bacaklar ve gövde net seçilebilir."},
+{w:11, fruit:"İncir kadar", length:"4-6 cm", weight:"~8 g", tri:1,
+ desc:"Bebek küçük solunum hareketleri yapmaya başlar, bu hareket akciğer gelişimi için önemlidir. Baş hâlâ vücudun yarısı kadar büyük görünür."},
+{w:12, fruit:"Yeşil limon kadar", length:"~6 cm", weight:"8-14 g", tri:1,
+ desc:"Tırnaklar ve kemikler oluştu, büyümeye devam ediyorlar. Bebek refleks olarak hareket eder, parmaklarını açıp kapatabilir."},
+{w:13, fruit:"Sarı limon kadar", length:"6-8 cm", weight:"15-20 g", tri:1,
+ desc:"Yüz hatları daha belirgin hale gelir, kulaklar ve gözler normal konumuna doğru yer değiştirir. Ses telleri bu hafta oluşmaya başlar. Bebek elini ağzına götürebilir."},
+{w:14, fruit:"Limon kadar", length:"8-9 cm", weight:"~25 g", tri:2,
+ desc:"İkinci trimester başladı. Bebeğin tüm iç organları gelişmiştir; cinsiyete göre üreme sistemi yapıları şekillenmeye devam eder."},
+{w:15, fruit:"Elma kadar", length:"9-10 cm", weight:"~50 g", tri:2,
+ desc:"Beyin artık kasları kontrol edebilecek kadar gelişti, bebek takla atabilir. Vücudu lanugo denen ince tüylerle kaplanır, yüz mimikleri yapabilir."},
+{w:16, fruit:"Avokado kadar", length:"11-12 cm", weight:"~100 g", tri:2,
+ desc:"Bebek baş parmağını emebilir, yumruk yapabilir. Kemikler sertleşmeye devam eder ama doğum için gerekli esnekliğini korur. Cinsiyet ultrasonda artık net görülebilir."},
+{w:17, fruit:"Nar kadar", length:"~13 cm", weight:"~150 g", tri:2,
+ desc:"Tat duyusu gelişmeye başlar, cilt altında yağ dokusu oluşur. Bebek sesleri duyabilir ve parlak ışığı hissedebilir, anne karnı dışarıdan belli olmaya başlar."},
+{w:18, fruit:"Dolmalık biber kadar", length:"12-14 cm", weight:"~150 g", tri:2,
+ desc:"Parmak izi tamamlandı. Bebek artık anne ve babasının sesini duyabilir. Eliyle bir şeyleri kavrayabilir, hıçkırabilir."},
+{w:19, fruit:"Kavun kadar", length:"16-18 cm", weight:"~250 g", tri:2,
+ desc:"Cildi vernix denen kaygan bir tabakayla kaplanmaya başlar, bu tabaka cildi korur. Duyu sistemi büyük oranda gelişti, ani seslerden irkilebilir."},
+{w:20, fruit:"Muz kadar", length:"17-19 cm", weight:"~300 g", tri:2,
+ desc:"Gebeliğin yarısı geride kaldı. Saç ve kaşlar belirginleşir, bebek ağzını açıp kapatabilir, dil çıkarabilir. Gözleri hâlâ kapalıdır."},
+{w:21, fruit:"Havuç kadar", length:"26-27 cm", weight:"~360 g", tri:2,
+ desc:"Kilo alımı hızlanır. Bu haftadaki boyu, doğacağı boyun yaklaşık yarısı kadardır."},
+{w:22, fruit:"Papaya kadar", length:"28-29 cm", weight:"~450 g", tri:2,
+ desc:"Akciğer gelişimi hızlanır, doğum sonrası nefes almayı sağlayacak protein üretimi başlar. Tekmeler artık daha güçlü hissedilir."},
+{w:23, fruit:"Patlıcan kadar", length:"~30 cm", weight:"~500 g", tri:2,
+ desc:"Beyin ve akciğerler hızla gelişmeye devam eder, hareketler daha bilinçli hale gelir. Cilt üzerinde koruyucu yağ tabakası kalınlaşır."},
+{w:24, fruit:"Mısır koçanı kadar", length:"30-31 cm", weight:"~600 g", tri:2,
+ desc:"Bu haftadan itibaren bebek tıbbi olarak yaşama şansına sahip kabul edilir. Sesleri net duyar, ona konuşmak ve müzik dinletmek faydalıdır."},
+{w:25, fruit:"Salatalık kadar", length:"35-36 cm", weight:"~670 g", tri:2,
+ desc:"Burun delikleri ve gözler açılır. Doğumda rahat nefes almayı sağlayacak sürfaktan üretimi hızla sürer."},
+{w:26, fruit:"Kabak kadar", length:"36-37 cm", weight:"~780 g", tri:2,
+ desc:"Saçlar ve tırnaklar uzamaya devam eder, cilt rengini oluşturacak pigment üretimi başlar. Doğan bebeklerin göz rengi başlangıçta mavidir."},
+{w:27, fruit:"Karnabahar kadar", length:"37-38 cm", weight:"~900 g", tri:2,
+ desc:"Bebeklerin en hareketli olduğu dönemlerden biridir, güçlü tekmeler hissedilebilir. Bebek artık sesleri ve ışığı ayırt edebilir, ilkel bir hafıza oluşmaya başlar."},
+{w:28, fruit:"Patates kadar", length:"38-39 cm", weight:"~1000 g", tri:3,
+ desc:"Üçüncü trimester başladı. Bebek bu haftadan sonra doğsa yaşama şansı yüksektir, ama beyin ve akciğer gelişimi sürmeye devam eder."},
+{w:29, fruit:"Bal kabağı kadar", length:"39-40 cm", weight:"~1200 g", tri:3,
+ desc:"Zeka ve kişilikle ilgili beyin bölgeleri hızla gelişir. Erken doğum riski varsa akciğer gelişimini hızlandırıcı tedaviler uygulanabilir."},
+{w:30, fruit:"Lahana kadar", length:"40-41 cm", weight:"~1400 g", tri:3,
+ desc:"Bebek hızla kilo almaya devam eder, 30-90 dakikalık aralıklarla uyuyup uyanır. Cilt altı yağ dokusu artar, yanaklar dolgunlaşır."},
+{w:31, fruit:"Hindistan cevizi kadar", length:"41-42 cm", weight:"~1500 g", tri:3,
+ desc:"Bu haftadan sonra kilo alımı hızlanır. Bu dönemde düzensiz, sancı benzeri Braxton-Hicks kasılmaları hissedilebilir, bunlar doğuma hazırlık niteliğindedir."},
+{w:32, fruit:"Ananas kadar", length:"42-43 cm", weight:"~1700 g", tri:3,
+ desc:"Akciğerler dışında diğer organlar büyük oranda gelişimini tamamladı. Bebek vaktinin çoğunu uyuyarak geçirir ve bu haftadan itibaren rüya görmeye başlar."},
+{w:33, fruit:"Kavun büyüklüğünde", length:"43-44 cm", weight:"1900-2000 g", tri:3,
+ desc:"Yer daraldığı için hareketlerde hafif azalma hissedilebilir. Lanugo tüylerinin çoğu döküldü, saç ve cilt rengi belirginleşti."},
+{w:34, fruit:"Kantalop kavunu kadar", length:"45-46 cm", weight:"2100-2300 g", tri:3,
+ desc:"Akciğer gelişimi neredeyse tamamlanmak üzeredir. Bu haftadan sonra doğacak bebeklerde yoğun bakım ihtiyacı genellikle azdır."},
+{w:35, fruit:"Bal kabağı büyüklüğünde", length:"46-47 cm", weight:"~2400 g", tri:3,
+ desc:"Bebek genellikle baş aşağı pozisyona döner. Doğuma hazırlık olarak aşağı doğru inmeye başlayabilir."},
+{w:36, fruit:"Marul kadar", length:"47-48 cm", weight:"2600-2700 g", tri:3,
+ desc:"Miyad bebek olmaya çok az kaldı, bu haftada doğum olursa genelde ciddi bir sorun yaşanmaz. Bebek iyice aşağı inmiş olabilir."},
+{w:37, fruit:"Pırasa kadar", length:"48-49 cm", weight:"2800-2900 g", tri:3,
+ desc:"Bebek artık miyad kabul edilir, prematüre sayılmaz. Akciğer gelişimi tamamlanmıştır, emme refleksi gelişmiştir."},
+{w:38, fruit:"Pırasa büyüklüğünde", length:"49-50 cm", weight:"~3000 g", tri:3,
+ desc:"Yer iyice daraldığı için hareketler azalabilir, bu normaldir ama doktorla paylaşılması önerilir."},
+{w:39, fruit:"Karpuz kadar", length:"50-51 cm", weight:"~3300 g", tri:3,
+ desc:"Doğumların büyük bölümü bu hafta ile bir sonraki hafta arasında gerçekleşir. Doğum çantasının hazır olması önerilir."},
+{w:40, fruit:"Karpuz büyüklüğünde", length:"50-52 cm", weight:"~3400 g", tri:3,
+ desc:"Beklenen doğum haftasına ulaşıldı. Eğer doğum henüz gerçekleşmediyse izlenecek yol hakkında doktorla görüşülmesi önerilir."}
+];
+
+const select = document.getElementById('week-select');
+const range = document.getElementById('week-range');
+const badge = document.getElementById('range-badge');
+const card = document.getElementById('info-card');
+
+weeksData.forEach(item => {
+  const opt = document.createElement('option');
+  opt.value = item.w;
+  opt.textContent = item.w + '. hafta';
+  select.appendChild(opt);
+});
+
+function triLabel(t){
+  if(t===1) return '1. trimester';
+  if(t===2) return '2. trimester';
+  return '3. trimester';
+}
+
+function renderWeek(weekNum){
+  const item = weeksData.find(w => w.w === Number(weekNum));
+  if(!item) return;
+  card.innerHTML = `
+    <div class="top-row">
+      <div class="week-title">${item.w}. hafta</div>
+      <div class="fruit-pill">${item.fruit}</div>
+    </div>
+    <div class="stats-row">
+      <div class="stat">
+        <span class="stat-label">Boy</span>
+        <span class="stat-value">${item.length}</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Kilo</span>
+        <span class="stat-value">${item.weight}</span>
+      </div>
+    </div>
+    <p class="week-desc">${item.desc}</p>
+    <div class="trimester-tag">${triLabel(item.tri)}</div>
+  `;
+  select.value = item.w;
+  range.value = item.w;
+  badge.textContent = item.w;
+}
+
+select.addEventListener('change', () => renderWeek(select.value));
+range.addEventListener('input', () => renderWeek(range.value));
+
+renderWeek(1);
+
+const babyWrap = document.getElementById('baby-wrap');
+const glitterColors = ['#F6E7A8','#9CB38A','#FCE9C9','#7C9A6B','#B98A4A'];
+
+function burstGlitter(){
+  for(let i=0;i<14;i++){
+    const dot = document.createElement('div');
+    dot.className = 'glitter';
+    const angle = Math.random()*Math.PI*2;
+    const dist = 40 + Math.random()*50;
+    dot.style.setProperty('--dx', Math.cos(angle)*dist + 'px');
+    dot.style.setProperty('--dy', Math.sin(angle)*dist + 'px');
+    dot.style.left = (60 + Math.random()*20 - 10) + 'px';
+    dot.style.top = (50 + Math.random()*20 - 10) + 'px';
+    dot.style.background = glitterColors[Math.floor(Math.random()*glitterColors.length)];
+    babyWrap.appendChild(dot);
+    setTimeout(()=> dot.remove(), 950);
+  }
+}
+
+babyWrap.addEventListener('click', burstGlitter);
+babyWrap.addEventListener('mouseenter', burstGlitter);
+</script>
+</body>
+</html>
